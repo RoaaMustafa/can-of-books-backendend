@@ -10,7 +10,7 @@ app.use(cors());
 
 const PORT = process.env.PORT || 3010;
 mongoose.connect('mongodb://localhost:27017/books', {useNewUrlParser: true, useUnifiedTopology: true});
-//localhost:3020/
+//localhost:3010/
 app.get('/',homeHandler);
 function homeHandler(req,res){
   res.send('Home Route');
@@ -82,15 +82,15 @@ app.get('/books', getBooksHandler);
 function getBooksHandler(req,res){
   let requestedUserEmail = req.query.email;
   userModel.find({email:requestedUserEmail },function(err,userData){
-    if(err){
-        console.log('something went wrong');
-    }
-    else
-    {
-        console.log(userData[20].books);
-        res.send(userData[20].books);
-    }
-});
+      if(err){
+          console.log('something went wrong');
+      }
+      else
+      {
+          console.log(userData[0].books);
+          res.send(userData[0].books);
+      }
+  });
 }
 
 app.listen(PORT||3010, () => console.log(`listening on ${PORT}`));
