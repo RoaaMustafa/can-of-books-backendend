@@ -68,6 +68,12 @@ function seedUserCollection (){
             description : 'The casual grandeur of Garth Greenwell’s prose, unfurling in page-long paragraphs and elegantly garrulous sentences, tempts the vulnerable reader into danger zones: traumatic memories, extreme sexual scenarios, states of paralyzing heartbreak and loss. In the case of “Cleanness,” Greenwell’s third work of fiction, I initially curled up with the book, savoring the sensuous richness of the writing, and then I found myself sweating a little, uncomfortably invested in the rawness of the scene.',
             status : 'https://media.newyorker.com/photos/5fc53eaac7dac80adfffcceb/master/w_1600%2Cc_limit/TNY-BestBooks2020-Greenwell.jpg'
         
+          },
+          {
+            name : 'Stranger Faces ',
+            description : 'In an age of totalizing theories, it’s nice to watch someone expertly pull a single idea through a needle’s eye. “Stranger Faces,” by Namwali Serpell, is one such exercise. The book’s catalytic inquiry—“what counts as a face and why?”—means to undermine the face, the way its expressive capabilities give it the cast of truth. ',
+            status : 'https://media.newyorker.com/photos/5fc53ead04d5eeb69d5bb23a/master/w_1600%2Cc_limit/TNY-BestBooks2020-Serpell.jpg'
+        
           }
       ]
 
@@ -87,8 +93,8 @@ function getBooksHandler(req,res){
       }
       else
       {
-          console.log(userData[0].books);
-          res.send(userData[0].books);
+          console.log(userData[84].books);
+          res.send(userData[84].books);
       }
   });
 }
