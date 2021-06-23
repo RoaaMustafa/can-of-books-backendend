@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 const PORT = process.env.PORT || 3010;
-mongoose.connect("mongodb://localhost:27017/books", {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -19,19 +19,15 @@ const {
   handleDeleteBook,
   getBooksHandler,
   handleAddBook,
-} = require('./modules/user');
+  updateBookHandler,
+} = require('./modules/Books');
 app.get("/books", getBooksHandler);
 
 //http://localhost:3010/book?email=abed
 // server.get('/book', bookHandler)
 app.post('/addbook', handleAddBook);
 app.delete('/deletebook/:index', handleDeleteBook);
-
-// const {
-//   getBooksHandler,
-//   handleAddBook,
-//   handleDeleteBooks,
-// } = require('./modules/user');
+app.put('/updateBook/:index', updateBookHandler);
 
 //localhost:3010/
 app.get("/", homeHandler);

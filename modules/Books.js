@@ -3,8 +3,9 @@
 
 
 const mongoose = require("mongoose");
-
-mongoose.connect("mongodb://localhost:27017/books", {
+require("dotenv").config();
+//mongodb://localhost:27017/books
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -15,11 +16,12 @@ module.exports = {
     getBooksHandler ,
     handleAddBook,
     handleDeleteBook,
+    updateBookHandler,
 };
 const bookSchema = new mongoose.Schema({
   name: String,
   description: String,
-  image: String,
+  status: String,
 });
 
 const userSchema = new mongoose.Schema({
@@ -35,7 +37,7 @@ function seedBooksCollection() {
     name: "Cleanness",
     description:
       "The casual grandeur of Garth Greenwell’s prose, unfurling in page-long paragraphs and elegantly garrulous sentences, tempts the vulnerable reader into danger zones: traumatic memories, extreme sexual scenarios, states of paralyzing heartbreak and loss. In the case of “Cleanness,” Greenwell’s third work of fiction, I initially curled up with the book, savoring the sensuous richness of the writing, and then I found myself sweating a little, uncomfortably invested in the rawness of the scene.",
-      image:
+      status:
       "https://media.newyorker.com/photos/5fc53eaac7dac80adfffcceb/master/w_1600%2Cc_limit/TNY-BestBooks2020-Greenwell.jpg",
   });
 
@@ -43,7 +45,7 @@ function seedBooksCollection() {
     name: "Stranger Faces ",
     description:
       "In an age of totalizing theories, it’s nice to watch someone expertly pull a single idea through a needle’s eye. “Stranger Faces,” by Namwali Serpell, is one such exercise. The book’s catalytic inquiry—“what counts as a face and why?”—means to undermine the face, the way its expressive capabilities give it the cast of truth. ",
-      image:
+      status:
       "https://media.newyorker.com/photos/5fc53ead04d5eeb69d5bb23a/master/w_1600%2Cc_limit/TNY-BestBooks2020-Serpell.jpg",
   });
 
@@ -53,8 +55,8 @@ function seedBooksCollection() {
   cleanness.save();
   stranger.save();
 }
-seedBooksCollection ();
-seedUserCollection ();
+// seedBooksCollection ();
+// seedUserCollection ();
 //data seeding
 function seedUserCollection() {
   const roaa = new userModel({
@@ -92,8 +94,8 @@ function getBooksHandler(req, res) {
     if (err) {
       console.log("something went wrong");
     } else {
-      console.log(userData[16].books);
-      res.send(userData[16].books);
+      console.log(userData[0].books);
+      res.send(userData[0].books);
     }
   });
 }
@@ -108,14 +110,14 @@ function handleAddBook(req,res){
         {
             // console.log(userData[0].books);
             
-            userData[16].books.push({
+            userData[0].books.push({
                 name:name,
                 description:description,
                 status:status
 
             })
-            userData[16].save();
-            res.send(userData[16].books);
+            userData[0].save();
+            res.send(userData[0].books);
             
         }
     })
@@ -132,19 +134,38 @@ function handleAddBook(req,res){
             }
             else
             {
-                const newBookArr = userData[16].books.filter((book,idx)=>{
+                const newBookArr = userData[0].books.filter((book,idx)=>{
                     if(idx !== index)
                     {
                         return book;
                     }
                 })
-                userData[16].books = newBookArr;
-                userData[16].save();
-                res.send(userData[16].books);
+                userData[0].books = newBookArr;
+                userData[0].save();
+                res.send(userData[0].books);
                 
             }
         })
     
     
     }
-
+    function updateBookHandler(req,res){
+      let {name,description,status,email}=req.body;
+      const index = Number(req.params.index);
+      userModel.findOne({email},(err,userData)=>{
+          console.log('before splice',userData);
+          userData.books.splice(index,1,{
+              name:name,
+              description:description,
+              status:status
+          })
+          console.log('after splice',userData);
+  
+          userData.save();
+          res.send(userData.books);
+      })
+  
+      
+  
+  }
+  
