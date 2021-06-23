@@ -21,6 +21,7 @@ module.exports = {
 const bookSchema = new mongoose.Schema({
   name: String,
   description: String,
+  img_url: String,
   status: String,
 });
 
@@ -37,16 +38,18 @@ function seedBooksCollection() {
     name: "Cleanness",
     description:
       "The casual grandeur of Garth Greenwell’s prose, unfurling in page-long paragraphs and elegantly garrulous sentences, tempts the vulnerable reader into danger zones: traumatic memories, extreme sexual scenarios, states of paralyzing heartbreak and loss. In the case of “Cleanness,” Greenwell’s third work of fiction, I initially curled up with the book, savoring the sensuous richness of the writing, and then I found myself sweating a little, uncomfortably invested in the rawness of the scene.",
-      status:
+      img_url:
       "https://media.newyorker.com/photos/5fc53eaac7dac80adfffcceb/master/w_1600%2Cc_limit/TNY-BestBooks2020-Greenwell.jpg",
+      status: "Faovarite 5"
   });
 
   const stranger = new bookModel({
     name: "Stranger Faces ",
     description:
       "In an age of totalizing theories, it’s nice to watch someone expertly pull a single idea through a needle’s eye. “Stranger Faces,” by Namwali Serpell, is one such exercise. The book’s catalytic inquiry—“what counts as a face and why?”—means to undermine the face, the way its expressive capabilities give it the cast of truth. ",
-      status:
+      img_url:
       "https://media.newyorker.com/photos/5fc53ead04d5eeb69d5bb23a/master/w_1600%2Cc_limit/TNY-BestBooks2020-Serpell.jpg",
+      status: "Faovarite 5"
   });
 
   // console.log(cleanness);
@@ -66,22 +69,25 @@ function seedUserCollection() {
         name: "Want",
         description:
           "Strong uses the friendship as a tether, returning to it to mark time’s passing; her technique is so sophisticated that the murk of the present and the sharply remembered past hold seamlessly together. Her biggest triumph is the transmission of consciousness. I loved the tense pleasure of staying pressed close to her narrator’s mind, with its beguiling lucidity of thought and rawness of feeling. ",
-          status:
+          img_url:
           "https://media.newyorker.com/photos/5fc53ead0013a5ddc52c0dfc/master/w_1600%2Cc_limit/TNY-BestBooks2020-StegerStrong.jpg",
+          status: "Faovarite 5"
       },
       {
         name: "Cleanness",
         description:
           "The casual grandeur of Garth Greenwell’s prose, unfurling in page-long paragraphs and elegantly garrulous sentences, tempts the vulnerable reader into danger zones: traumatic memories, extreme sexual scenarios, states of paralyzing heartbreak and loss. In the case of “Cleanness,” Greenwell’s third work of fiction, I initially curled up with the book, savoring the sensuous richness of the writing, and then I found myself sweating a little, uncomfortably invested in the rawness of the scene.",
-          status:
+          img_url:
           "https://media.newyorker.com/photos/5fc53eaac7dac80adfffcceb/master/w_1600%2Cc_limit/TNY-BestBooks2020-Greenwell.jpg",
+          status: "Recommende to me"
       },
       {
         name: "Stranger Faces ",
         description:
           "In an age of totalizing theories, it’s nice to watch someone expertly pull a single idea through a needle’s eye. “Stranger Faces,” by Namwali Serpell, is one such exercise. The book’s catalytic inquiry—“what counts as a face and why?”—means to undermine the face, the way its expressive capabilities give it the cast of truth. ",
-          status:
+          img_url:
           "https://media.newyorker.com/photos/5fc53ead04d5eeb69d5bb23a/master/w_1600%2Cc_limit/TNY-BestBooks2020-Serpell.jpg",
+          status: "Faovarite 5"
       },
     ],
   });
@@ -101,7 +107,7 @@ function getBooksHandler(req, res) {
 }
 function handleAddBook(req,res){
     console.log(req.body);
-    let {name,description,status,email}=req.body;
+    let {name,description,img_url,status,email}=req.body;
     userModel.find({email:email},function(err,userData){
         if(err){
             res.send(err);
@@ -113,6 +119,7 @@ function handleAddBook(req,res){
             userData[0].books.push({
                 name:name,
                 description:description,
+                img_url:img_url,
                 status:status
 
             })
@@ -152,7 +159,7 @@ function handleAddBook(req,res){
     function updateBookHandler(req,res){
       let {name,description,status,email}=req.body;
       const index = Number(req.params.index);
-      userModel.findOne({email},(err,userData)=>{
+      userModel.findOne({email},(_err,userData)=>{
           console.log('before splice',userData);
           userData.books.splice(index,1,{
               name:name,
